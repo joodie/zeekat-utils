@@ -1,0 +1,10 @@
+*~
+package
+lucene
+*.db
+lucene-index
+lib
+tmp
+.#*
+*#
+
