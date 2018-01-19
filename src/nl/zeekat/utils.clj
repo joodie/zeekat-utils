@@ -1,6 +1,5 @@
 (ns nl.zeekat.utils
-  (:use [clojure.contrib [def :only (defalias)]]
-        clojure.contrib.logging)
+  (:require [clojure.tools.logging :as log])
   (:import java.security.MessageDigest
            java.net.URLDecoder
            java.util.UUID))
@@ -24,9 +23,10 @@
 
 (def integers (iterate inc 0))
 
-(defmacro #^{:doc "alias (using defalias) a bunch of vars from another namespace into the current one"}
-  alias-from [n & vars]
-  `(do ~@(map #(list 'clojure.contrib.def/defalias % (symbol (name n) (name %))) vars)))
+(defmacro alias-from
+  "alias a bunch of vars from another namespace into the current one"
+  [n & vars]
+  `(do ~@(map #(list 'def % (symbol (name n) (name %))) vars)))
 
 (defn limit-string [length s]
   (if (< (.length s) length)
@@ -42,7 +42,7 @@
   (URLDecoder/decode u))
 
 (defn debug-exp [exp]
-  (warn [:DEBUG exp])
+  (log/warn [:DEBUG exp])
   exp)
 
 (defn merge-in
